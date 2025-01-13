@@ -1,0 +1,414 @@
+WEEK 11
+
+1] Two strings A and B comprising of lower case English letters are compatible if they are equal or can be made equal by following this step any number of times:
+
+·         Select a prefix from the string A (possibly empty), and increase the alphabetical value of all the characters in the prefix by the same valid amount. For example, if the string is xyz and we select the prefix xy then we can convert it to yx by increasing the alphabetical value by 1. But if we select the prefix xyz then we cannot increase the alphabetical value.
+
+ 
+
+Your task is to determine if given strings A and B are compatible.
+
+ 
+
+Input format
+
+ 
+
+First line: String A
+
+Next line: String B
+
+ 
+
+Output format
+
+ 
+
+For each test case, print YES if string A can be converted to string B, otherwise print NO.
+
+ 
+
+Constraints
+
+ 
+
+1 ≤ len(A) ≤ 1000000
+
+1 ≤ len(B) ≤ 1000000
+
+ 
+
+SAMPLE INPUT
+
+ 
+
+abaca
+
+cdbda
+
+ 
+
+SAMPLE OUTPUT
+
+ 
+
+YES
+
+ 
+
+Explanation
+
+The string abaca can be converted to bcbda in one move and to cdbda in the next move.
+
+
+Answer:(penalty regime: 0 %)
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char A[1000001], B[1000001];
+    scanf("%s %s", A, B);
+    int n = strlen(A);
+
+    if (strlen(B) != n) {
+        printf("NO\n");
+        return 0;
+    }
+
+    for (int i = 0; i < n; ) {
+        char char_a = A[i];
+        char char_b = B[i];
+        if (char_b < char_a) {
+            printf("NO\n");
+            return 0;
+        }
+        int diff = char_b - char_a;
+        while (i < n && A[i] == char_a) {
+            if (B[i] - A[i] != diff) {
+                printf("NO\n");
+                return 0;
+            }
+            i++;
+        }
+    }
+
+    printf("YES\n");
+    return 0;
+}
+
+Input		
+abaca
+cdbda
+Got
+YES
+Passed all tests!  
+
+2] Danny has a possible list of passwords of Manny's facebook account. All passwords length is odd. But Danny knows that Manny is a big fan of palindromes. So, his password and reverse of his password both should be in the list.
+
+ 
+
+You have to print the length of Manny's password and it's middle character.
+
+Note: The solution will be unique.
+
+
+INPUT
+
+The first line of input contains the integer N, the number of possible passwords.
+
+Each of the following N lines contains a single word, its length being an odd number greater than 2 and lesser than 14. All characters are lowercase letters of the English alphabet.
+
+ 
+
+OUTPUT
+
+ 
+
+The first and only line of output must contain the length of the correct password and its central letter.
+
+ 
+
+CONSTRAINTS
+
+ 
+
+1 ≤ N ≤ 100
+
+ 
+
+SAMPLE INPUT
+
+ 
+
+4
+
+abc
+
+def
+
+feg
+
+cba
+
+ 
+
+SAMPLE OUTPUT
+
+ 
+
+3 b
+
+ 
+
+
+
+
+Answer:(penalty regime: 0 %)
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int N;
+    char passwords[100][15];
+    scanf("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        scanf("%s", passwords[i]);
+    }
+
+    for (int i = 0; i < N; i++) {
+        int len = strlen(passwords[i]);
+        for (int j = 0; j < N; j++) {
+            if (i != j) {
+                int is_reverse = 1;
+                for (int k = 0; k < len; k++) {
+                    if (passwords[i][k] != passwords[j][len - k - 1]) {
+                        is_reverse = 0;
+                        break;
+                    }
+                }
+                if (is_reverse) {
+                    printf("%d %c\n", len, passwords[i][len / 2]);
+                    return 0;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+Input		
+4
+abc
+def
+feg
+cba
+Got
+3 b
+Passed all tests!  
+
+
+3] Joey loves to eat Pizza. But he is worried as the quality of pizza made by most of the restaurants is deteriorating. The last few pizzas ordered by him did not taste good :(. Joey is feeling extremely hungry and wants to eat pizza. But he is confused about the restaurant from where he should order. As always he asks Chandler for help.
+
+Chandler suggests that Joey should give each restaurant some points, and then choose the restaurant having maximum points. If more than one restaurant has same points, Joey can choose the one with lexicographically smallest name.
+
+ 
+
+Joey has assigned points to all the restaurants, but can't figure out which restaurant satisfies Chandler's criteria. Can you help him out?
+
+ 
+
+Input:
+
+First line has N, the total number of restaurants.
+
+Next N lines contain Name of Restaurant and Points awarded by Joey, separated by a space. Restaurant name has no spaces, all lowercase letters and will not be more than 20 characters.
+
+ 
+
+Output:
+
+ 
+
+Print the name of the restaurant that Joey should choose.
+
+ 
+
+Constraints:
+
+ 
+
+1 <= N <= 105
+
+1 <= Points <= 106
+
+ 
+
+SAMPLE INPUT
+
+ 
+
+3
+
+Pizzeria 108
+
+Dominos 145
+
+Pizzapizza 49
+
+ 
+
+SAMPLE OUTPUT
+
+ 
+
+Dominos
+
+
+Explanation
+
+ 
+Dominos has maximum points.
+
+
+Answer:(penalty regime: 0 %)
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int N, points, max_points = 0;
+    char restaurant[21], result[21];
+
+    scanf("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        scanf("%s %d", restaurant, &points);
+        if (points > max_points || 
+           (points == max_points && strcmp(restaurant, result) < 0)) {
+            max_points = points;
+            strcpy(result, restaurant);
+        }
+    }
+
+    printf("%s\n", result);
+    return 0;
+}
+
+
+Input		
+3
+Pizzeria 108
+Dominos 145
+Pizzapizza 49
+Got
+Dominos
+Passed all tests!  
+
+4] These days Bechan Chacha is depressed because his crush gave him list of mobile number some of them are valid and some of them are invalid. Bechan Chacha has special power that he can pick his crush number only if he has valid set of mobile numbers. Help him to determine the valid numbers.
+
+You are given a string "S" and you have to determine whether it is Valid mobile number or not. Mobile number is valid only if it is of length 10 , consists of numeric values and it shouldn't have prefix zeroes.
+
+ 
+
+Input:
+
+ 
+
+First line of input is T representing total number of test cases.
+
+Next T line each representing "S" as described in in problem statement.
+
+
+Output:
+
+Print "YES" if it is valid mobile number else print "NO".
+
+Note: Quotes are for clarity.
+
+ 
+
+Constraints:
+
+ 
+
+1<= T <= 103
+
+sum of string length <= 105
+
+ 
+
+SAMPLE INPUT
+
+ 
+
+3
+
+1234567890
+
+0123456789
+
+0123456.87
+
+ 
+
+SAMPLE OUTPUT
+
+ 
+
+YES
+
+NO
+
+NO
+
+Answer:(penalty regime: 0 %)
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        char S[15];
+        int is_valid = 1, len = 0;
+
+        scanf("%s", S);
+        len = strlen(S);
+
+        if (len != 10 || S[0] == '0') {
+            is_valid = 0;
+        } else {
+            for (int i = 0; i < len; i++) {
+                if (S[i] < '0' || S[i] > '9') {
+                    is_valid = 0;
+                    break;
+                }
+            }
+        }
+
+        if (is_valid) {
+            printf("YES\n");
+        } else {
+            printf("NO\n");
+        }
+    }
+
+    return 0;
+}
+
+Input		
+3
+1234567890
+0123456789
+0123456.87
+Got
+YES
+NO
+NO
+Passed all tests!  
